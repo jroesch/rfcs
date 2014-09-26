@@ -33,29 +33,34 @@ to use in its place since related words like sorts, kinds, and types already
 have established meanings in the literature. I will try to refer to them as
 higher kinds throughout.*
 
-For those unfamiliar with kinds they can be viewed simplest as type constructor
-polymorphism (or typelevel functions if you are so inclined). It allows us to
-ask for a partially applied type constructor as a type argument.
+For those unfamiliar with kinds they though of as type constructor
+polymorphism (or typelevel functions if you are so inclined). Higher kinds 
+allows the programmer to take partially applied type constructors as 
+type argument.
 
-Theoretically kinds are simply adding another level of classification a programming
-language. Every value has a type, and every type has a kind. In many ways the
-system of kinds used is up to the designer of the type system.
-Languages like Haskell (without extensions like DataKinds), Scala have very
-simple kind systems. Although there are languages with much more complexity like
-Omega.
+Theoretically kinds are just another level of classification. 
+Just as we attribute every value a type, we now attribute every 
+type a kind. This allows the programmer to specify what *kind*
+of type they want to accept instead of treating all types
+uniformly as we do in type systems with no kinds.
 
-These simple systems are built on two kinds * the kind of types, and -> the kind
-given to type constructors.
+The kind used in a type system is a decision up that must be made by the
+designers of the type system. Languages like Haskell (without extensions 
+like DataKinds) and Scala have very simple kind systems. For comparsion 
+there are languages like Omega that have a much richer notion of kinds.
+
+These so called "simple kinds" are built on two kinds `*`
+the kind of types, and `->` the kind given to type constructors.
 
 We introduce the Kind of Rust types to be:
 ```
     kind ::= *
           | kind -> kind
-          | '*'
+          | '*
 ```
 
 This grammar is purely for demonstration and we provide no way for the user to
-directly annotate kinds.
+directly annotate kinds with this syntax.
 
 Here are a few examples:
 ```rust
@@ -68,24 +73,32 @@ struct HashMap<K, V> { ... } // has the kind * -> * -> *
 
 The design used by Haskell and Scala would be sufficient if it was not for the
 fact that Rust also allows for types to be parametrized by lifetimes. Since
-these are treated by Rust distinctly at the type it makes sense to consider them
+these are treated by Rust distinctly at the type it seems prudent to consider them
 distinct at the kind level as well.
 
 For example the adaptor iterator `Map<'a, T>` would have the kind: `'* -> * -> *`.
 
-Each type declaration now attributes each type with a kind as we demonstrated
-in the above examples.
+Now each Item that declares a type implicitly assigns a kind to it in the
+fashion we demonstrated in the above examples.
 
 The second piece of the design is enabling us to write higher kinded type
 parameters and to pass partially applied types as type arguments.
 
 We allow for one to express that a type is higher kinded with the use of
-`_`s as placeholders for type arguments. For example a generic function that
-takes a higher kinded type argument can be written as so:
+`_`s as placeholders for plain type arguments, and `'_` for lifetime
+arguments. 
+
+If we consider a generic function that
+takes a higher kinded type argument:
 
 ```rust
-fn generic<G<_>, A>(arg: G<A>) -> ... { ... }
+fn generic<G<_>, A>(arg: G<A>) -> G<A> { arg }
 ```
+We can see here that G must be something of the kind: `* -> *`. We support
+parital application for ease of use as well.
+
+In the above situation G could be substitued by: `Vec` or `HashMap<int, _>`
+both of which will have the kind `* -> *`.
 
 Due to parametricity we do not know anything about G<_> and the ability by
 itself is not very useful.
@@ -194,11 +207,17 @@ With regards to traits it may be possible to implement support for trait
 resolution on only higher kinded type argumenta. This is mostly a nicety and is
 open for suggestions and debate.
 
+We could also omit parital application from the design and instead require users
+to do: 
+```rust
+type IntMap<A> = HashMap<int, A>;
+```
+
 # Unresolved questions
 
 Syntax around higher kinded types and traits. As discussed above we currently
 opt for a backwards compatible but conservative solution to the combination of
-type classes
+type classes.
 
 # References
 AssociatedTypes: https://github.com/rust-lang/rfcs/blob/master/active/0059-associated-items.md
