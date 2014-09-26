@@ -9,7 +9,7 @@ programmers to abstract over type constructors.
 
 This addition makes it possible to write generic code that was either
 impossible or very ugly to encode before (as @aturon
-demonstrates [here]([https://github.com/rust-lang/rfcs/blob/master/active/0059-associated-items.md]).
+demonstrates [here](https://github.com/rust-lang/rfcs/blob/master/active/0059-associated-items.md)).
 
 # Motivation
 
