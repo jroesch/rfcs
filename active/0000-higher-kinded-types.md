@@ -33,10 +33,10 @@ to use in its place since related words like sorts, kinds, and types already
 have established meanings in the literature. I will try to refer to them as
 higher kinds throughout.*
 
-For those unfamiliar with kinds they though of as type constructor
+For those unfamiliar with kinds they can be thought of as type constructor
 polymorphism (or typelevel functions if you are so inclined). Higher kinds 
 allows the programmer to take partially applied type constructors as 
-type argument.
+type arguments.
 
 Theoretically kinds are just another level of classification. 
 Just as we attribute every value a type, we now attribute every 
@@ -108,7 +108,7 @@ able to recover information about the type G.
 
 Other languages with higher kinds and traits (typeclasses) support this
 behavior already. There are a few quirks though. In both Haskell and Scala
-it is possible for our dispatch type to be only higher kinded
+it is possible for our dispatch type to be only higher kinded.
 
 For example in Functor:
 
@@ -121,9 +121,11 @@ When instance selection happens we simply unify at the call site and pick the
 instance based on `f`, so for a `[a]` map f xs we unify and solve that f is
 []. Then we look for an instance on `f`, and pick
 
+```haskell
 instance Functor ([]) where
   map f [] = []
   map f (x:xs) = xs
+```
 
 In Scala everything happens via `implicit` selection solely on type:
 
@@ -139,10 +141,10 @@ and elsewhere they inject the operations on to the type using extension methods:
 final class FunctorOps[F[_],A] ... { ... }
 ```
 
-Rust traits require the Self type is fully applied since trait implementations
-are resolved based on receiver type. For example if we invoke `map` on some
-`Iterator` like `iter.map(f)` the `impl` is selected based on `iter` (and soon
-any other input argument as specified in the Associated Types RFC).
+Rust traits currently require that the Self type is fully applied since trait 
+implementationsare resolved based on receiver type. 
+For example if we invoke `map` on some `Iterator` like `iter.map(f)` the `impl` is 
+selected based on `iter` (and soon any other input argument as specified in the Associated Types RFC).
 
 We can easily support implementation of traits like `Functor` and friends with
 this style:
@@ -191,7 +193,7 @@ impl<C<_>, A> for FlexList<C, A> where C<A>: SmartPtr<C, A> {
 
 # Drawbacks
 
-This change that it complicates the type system, and adds more surface
+This change complicates the type system, and adds more surface
 area to the type checker.
 
 # Alternatives
