@@ -9,16 +9,17 @@ programmers to abstract over type constructors.
 
 This addition makes it possible to write generic code that was either
 impossible or very ugly to encode before (as @aturon
-demonstrates [here]([https://github.com/rust-lang/rfcs/blob/master/active/0059-associated-items.md])).
+demonstrates [here]([https://github.com/rust-lang/rfcs/blob/master/active/0059-associated-items.md]).
 
 # Motivation
 
-This feature makes it simpler to write generic code that operates on generic
-types that are partially applied. This feature is absent from most "main stream"
+This feature enables one to write generic code that operates on fully unapplied 
+or partially applied type constructors. This feature is absent from most "main stream"
 languages but is present in Scala and Haskell, and has an equivalent in C++'s
-template template arguments. It enables one to write code that abstracts over
-collections, as well as powerful generic programming especially in conjunction
-with features like associated types.
+template template arguments. Allowing programmers to write code that abstracts over
+collections, containers, smart pointers, and enabling advanced generic programming
+techniques combined with features like associated types, multidispatch, and where
+clauses.
 
 # Detailed design
 
