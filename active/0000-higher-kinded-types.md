@@ -14,7 +14,7 @@ demonstrates [here](https://github.com/rust-lang/rfcs/blob/master/active/0059-as
 # Motivation
 
 This feature enables one to write generic code that operates on fully unapplied 
-or partially applied type constructors. This feature is absent from most "main stream"
+or partially applied type constructors. This feature is absent from most "mainstream"
 languages but is present in Scala and Haskell, and has an equivalent in C++'s
 template template arguments. Allowing programmers to write code that abstracts over
 collections, containers, smart pointers, and enabling advanced generic programming
