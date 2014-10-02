@@ -97,10 +97,10 @@ fn generic<G<_>, A>(arg: G<A>) -> G<A> { arg }
 We can see here that G must be something of the kind: `* -> *`. We support
 parital application for ease of use as well.
 
-In the above situation G could be substitued by: `Vec` or `HashMap<int, _>`
+In the above situation G could be substituted by: `Vec` or `HashMap<int, _>`
 both of which will have the kind `* -> *`.
 
-Due to parametricity we do not know anything about G<_> and the ability by
+Due to [Parametricity](http://en.wikipedia.org/wiki/Parametricity) we do not know anything about G<_> and the ability by
 itself is not very useful.
 
 We must also be able to talk about the higher kinded types in traits to be
@@ -164,7 +164,7 @@ impl Functor<Vec, A> for Vec<A> {
 ```
 
 Obviously this change allows for us to implement traditional functional
-programming abstractions like (Functor, Monad, ect) or Scala style overloaded
+programming abstractions like (Functor, Monad, etc) or Scala style overloaded
 collections, but most importantly it opens up new kinds of abstractions in
 Rust code.
 
