@@ -13,7 +13,7 @@ demonstrates [here](https://github.com/rust-lang/rfcs/blob/master/active/0059-as
 
 # Motivation
 
-This feature enables one to write generic code that operates on fully unapplied 
+This feature enables one to write generic code that operates on fully unapplied
 or partially applied type constructors. This feature is absent from most "mainstream"
 languages but is present in Scala and Haskell, and has an equivalent in C++'s
 template template arguments. Allowing programmers to write code that abstracts over
@@ -25,7 +25,7 @@ clauses.
 
 ### High Level Design
 
-We enrich type system is enriched with the notion of "kinds".
+We enrich the type system with the notion of "kinds".
 
 As an aside:
 *unforunately this word has already been used in Rust, but I am not sure what
@@ -34,19 +34,19 @@ have established meanings in the literature. I will try to refer to them as
 higher kinds throughout.*
 
 For those unfamiliar with kinds they can be thought of as type constructor
-polymorphism (or typelevel functions if you are so inclined). Higher kinds 
-allows the programmer to take partially applied type constructors as 
+polymorphism (or typelevel functions if you are so inclined). Higher kinds
+allows the programmer to take partially applied type constructors as
 type arguments.
 
-Theoretically kinds are just another level of classification. 
-Just as we attribute every value a type, we now attribute every 
+Theoretically kinds are just another level of classification.
+Just as we attribute every value a type, we now attribute every
 type a kind. This allows the programmer to specify what *kind*
 of type they want to accept instead of treating all types
 uniformly as we do in type systems with no kinds.
 
 The kind used in a type system is a decision up that must be made by the
-designers of the type system. Languages like Haskell (without extensions 
-like DataKinds) and Scala have very simple kind systems. For comparsion 
+designers of the type system. Languages like Haskell (without extensions
+like DataKinds) and Scala have very simple kind systems. For comparsion
 there are languages like Omega that have a much richer notion of kinds.
 
 These so called "simple kinds" are built on two kinds `*`
@@ -86,7 +86,7 @@ parameters and to pass partially applied types as type arguments.
 
 We allow for one to express that a type is higher kinded with the use of
 `_`s as placeholders for plain type arguments, and `'_` for lifetime
-arguments. 
+arguments.
 
 If we consider a generic function that
 takes a higher kinded type argument:
@@ -141,9 +141,9 @@ and elsewhere they inject the operations on to the type using extension methods:
 final class FunctorOps[F[_],A] ... { ... }
 ```
 
-Rust traits currently require that the Self type is fully applied since trait 
-implementationsare resolved based on receiver type. 
-For example if we invoke `map` on some `Iterator` like `iter.map(f)` the `impl` is 
+Rust traits currently require that the Self type is fully applied since trait
+implementationsare resolved based on receiver type.
+For example if we invoke `map` on some `Iterator` like `iter.map(f)` the `impl` is
 selected based on `iter` (and soon any other input argument as specified in the Associated Types RFC).
 
 We can easily support implementation of traits like `Functor` and friends with
@@ -206,11 +206,11 @@ The obvious syntax changes would be to fully infer the kinds of type variables
 instead of making them explicit.
 
 With regards to traits it may be possible to implement support for trait
-resolution on only higher kinded type argumenta. This is mostly a nicety and is
+resolution on only higher kinded type arguments. This is mostly a nicety and is
 open for suggestions and debate.
 
-We could also omit parital application from the design and instead require users
-to do: 
+We could also omit partial application from the design and instead require users
+to do:
 ```rust
 type IntMap<A> = HashMap<int, A>;
 ```
